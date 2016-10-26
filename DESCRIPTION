@@ -1,11 +1,13 @@
 Package: clusterconf
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Title: Interface with clusterconf.cluster packages to read cluster configurations
+Version: 0.0.1
+Authors@R: person("Matt", "Pollock", email = "mpollock@mitre.org", role = c("aut", "cre"))
+Description: The clusterconf.* package parent. This package will handle reading in configurations,
+  parsing out parameter values from configurations, and tracking/installing cluster-specific 
+  configuration packages.
 Depends:
     R (>= 3.2.3)
-License: What license is it under?
+License: MITRE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1

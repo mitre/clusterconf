@@ -40,6 +40,7 @@ get_cluster_configs <- function(cluster_name, scope, yaml_path) {
 #'   \code{\link{get_cluster_configs}}.
 #' @param parameter Character. The name of the parameter of interest. 
 #' @param scope Charcter. The 
+#' @export
 get_cluster_param <- function(configs, parameter, scope) {
   
   # filter by scope
