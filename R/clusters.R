@@ -15,7 +15,7 @@ is_cluster_known <- function(cluster_name, install="ask") {
   config_pkg <-get_cluster_package_name(cluster_name)
   if (config_pkg %in% installed.packages()[, 1]) {
     return(TRUE)
-  } else if (config_pkg %in% list_clusters()) {
+  } else if (config_pkg %in% list_available_clusters()) {
     message("The cluster configuration package '", config_pkg, "', corresponding to the '",
             config_pkg, "' cluster is not installed. It is however a cluster with known configuration. ")
     if (grepl("^a", install))
@@ -32,7 +32,7 @@ is_cluster_known <- function(cluster_name, install="ask") {
     warning(paste0("The cluster configuration package '", config_pkg, "', corresponding to the '",
                    cluster_name, "' cluster is not installed. Moreover no configuration package was found ", 
                    "at any of the currently configured repositories. ",
-                   "Use the function 'list_clusters()' to show cluster configuration packages ",
+                   "Use the function 'list_available_clusters()' to show cluster configuration packages ",
                    "that are locally installed as well as those available in the repositories that ",
                    "your R session knows about (listed using 'getOption(\"repos\")'). ",
                    "Likely issues include a typo (or otherwise incorrect cluster specification name) ",

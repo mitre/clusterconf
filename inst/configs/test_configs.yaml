@@ -1,0 +1,7 @@
+default:
+  scope1:
+    param1: 1
+    param2: "yes"
+  scope2:
+    param1: "yes"
+    param2: "no"
