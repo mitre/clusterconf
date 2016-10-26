@@ -5,23 +5,80 @@
 #' @param cluster_name Character. The name of the cluster. Capitolization and spacing
 #'   is ignored and does not matter (e.g., "My Cluster" is equivalent to "mycluster")
 #' @param scope Character. The scope of the configurations of interest. The configuration
-#'   YAML may be organized according to 
+#'   YAML may be organized by various headings.
 #' @importFrom config get
 #' @export
-get_cluster_configs <- function(cluster_name, scope) {
-  configs <- config::get(get_yaml_configuraions_path(cluster_name))
+get_cluster_configs <- function(cluster_name, scope, yaml_path) {
+  if (missing(yaml_path)) {
+    is_cluster_known(cluster_name)
+    configs <- config::get(file=get_yaml_configuraions_path(cluster_name))
+  } else
+    configs <- config::get(file=yaml_path)
   
   if (!missing(scope)) {
-    if (!(scope %in% names(configs))) {
+    if (is_valid_scope(configs, scope)) 
+      configs <- configs[[scope]]
+     else 
+      configs <- NULL
+  }
+  return(configs)
+}
+
+#' Utility function to graph parameter
+#' 
+#' This function centralizes digging through the configurations list into one place.
+#' Given a parameter name and (optionally) a scope, it will find the parameter and
+#' return it. If no such parameter can be found then a \code{NULL} value is returned.
+#' The idea here is that \code{\link{get_cluster_configs}} has already been used
+#' to read the configuration file.
+#' 
+#' In the event that multiple configurations match the requested parameter (e.g.,
+#' there exist parameters in different scopes with the same name) then all matches
+#' will be returned provided they are at the same level of nestedness. 
+#' 
+#' @param configs List. Cluster configurations, usually obtained using a call to
+#'   \code{\link{get_cluster_configs}}.
+#' @param parameter Character. The name of the parameter of interest. 
+#' @param scope Charcter. The 
+get_cluster_param <- function(configs, parameter, scope) {
+  
+  # filter by scope
+  if (!missing(scope)) {
+    if (is_valid_scope(configs, scope)) 
+      configs <- configs[[scope]]
+    else 
+      return(NULL)
+  }
+  
+  # search for param
+  param <- search_for_param(configs, tolower(parameter))
+}
+search_for_param <- function(configs, parameter) {
+  names <- names(configs)
+  id <- names==parameter
+  if (any(id))
+    return(configs[[which(id)]])
+  
+  # didn't find the param, check nested lists
+  id <- vapply(configs, is.list, NA)
+  if (!any(id))
+    return(NULL)
+  nested_configs <- configs[id]
+  config <- lapply(nested_configs, search_for_param, parameter=parameter)
+  config <- unlist(config)
+  return(config[!is.null(config)])
+}
+
+is_valid_scope <- function(configs, scope, warn=TRUE) {
+  if (!(scope %in% names(configs))) {
+    if (warn)
       warning(paste0("Cannot return configurations for scope: '", scope, "'. ",
                      "Valid scopes are: '", paste0(names(configs), collapse="', '"),
                      "'. Returning NULL."))
-      configs <- NULL
-    } else {
-      configs <- configs[[scope]]
-    }
+    return(FALSE)
+  } else {
+    return(TRUE)
   }
-  return(configs)
 }
 
 #' @rdname get_cluster_configs
@@ -64,13 +121,4 @@ get_java_dependencies_path <- function(cluster_name) {
     pkg_path <- file.path(pkg_path, "inst")
   
   return(file.path(pkg_path, "java"))
-}
-
-
-get_cluster_name <- function(cluster_name) {
-  return(tolower(gsub(" ", "", cluster_name)))
-}
-
-get_cluster_package_name <- function(cluster_name) {
-  return(paste0("clusterconf.", get_cluster_name(cluster_name)))
 }
