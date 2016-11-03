@@ -5,16 +5,22 @@
 \alias{get_java_dependencies_path}
 \title{Get java classpath}
 \usage{
-get_java_classpath(cluster_name, jars)
+get_java_classpath(jars, cluster_name, base_path, configs)
 
-get_java_dependencies_path(cluster_name)
+get_java_dependencies_path(cluster_name, pkg_name)
 }
 \arguments{
-\item{cluster_name}{Character. The name of the cluster. Capitolization and spacing
-is ignored and does not matter (e.g., "My Cluster" is equivalent to "mycluster")}
-
 \item{jars}{Character. A vector of jar files to include on the classpath. These should
 be listed using the full file name, including the ".jar" extension at the end.}
+
+\item{cluster_name}{Character. The name of the cluster. Capitalization and spacing
+is ignored and does not matter (e.g., "My Cluster" is equivalent to "mycluster")}
+
+\item{base_path}{Character. A file path to the directory where the dependencies may
+be found. This is used in place of the cluster resources if provided.}
+
+\item{configs}{List. The parsed YAML configurations. This is used if provided and
+neither \code{cluster_name} nor \code{base_path} is provided}
 }
 \description{
 Some cluster configuration packages contain java dependencies. This utility will

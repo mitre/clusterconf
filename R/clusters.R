@@ -8,8 +8,11 @@
 #'   is ignored and does not matter (e.g., "My Cluster" is equivalent to "mycluster")
 #' @param install Character. Should be one of \code{"ask"}, \code{"yes"}, or \code{"no"},
 #'   case insensitive. First letter abbreviations are suficient.
+#' @param stopifnot Logical. If \code{TRUE} then in the event a cluster is not known
+#'   an error will result. Otherwise that case will trigger a warning and a \code{FALSE}
+#'   return value.
 #' @export
-is_cluster_known <- function(cluster_name, install="ask") {
+is_cluster_known <- function(cluster_name, install="ask", stopifnot=FALSE) {
   
   install <- tolower(install)
   config_pkg <-get_cluster_package_name(cluster_name)
@@ -29,14 +32,18 @@ is_cluster_known <- function(cluster_name, install="ask") {
       return(FALSE)
     }
   } else {
-    warning(paste0("The cluster configuration package '", config_pkg, "', corresponding to the '",
-                   cluster_name, "' cluster is not installed. Moreover no configuration package was found ", 
-                   "at any of the currently configured repositories. ",
-                   "Use the function 'list_available_clusters()' to show cluster configuration packages ",
-                   "that are locally installed as well as those available in the repositories that ",
-                   "your R session knows about (listed using 'getOption(\"repos\")'). ",
-                   "Likely issues include a typo (or otherwise incorrect cluster specification name) ",
-                   "or else perhaps the requisite package repository is not configured."))
+    if (stopifnot)
+      f <- stop
+    else
+      f <- warning
+    f(paste0("The cluster configuration package '", config_pkg, "', corresponding to the '",
+             cluster_name, "' cluster is not installed. Moreover no configuration package was found ", 
+             "at any of the currently configured repositories. ",
+             "Use the function 'list_available_clusters()' to show cluster configuration packages ",
+             "that are locally installed as well as those available in the repositories that ",
+             "your R session knows about (listed using 'getOption(\"repos\")'). ",
+             "Likely issues include a typo (or otherwise incorrect cluster specification name) ",
+             "or else perhaps the requisite package repository is not configured."))
     return(FALSE)
   }
 }
@@ -44,27 +51,22 @@ is_cluster_known <- function(cluster_name, install="ask") {
 #' @rdname is_cluster_known
 #' @export
 list_available_clusters <- function() {
-  clusters <- get_var("available.clusters")
-  if (is.null(clusters)) {
-    cache_available_clusters()
-    clusters <- get_var("available.clusters")
-  }
-  return(clusters)
-}
-
-cache_available_clusters <- function() {
   pattern <- paste0("^", get_config_pkg_prepend())
   ap <- c(available.packages()[, 1], installed.packages()[, 1])
   config_pkgs <- ap[grepl(pattern, ap)]
   cluster_names <- gsub(pattern, "", config_pkgs)
   names(cluster_names) <- NULL
-  assign("available.clusters", unique(cluster_names), pkg_globals)
+  return(unique(cluster_names))
 }
 
+#' @rdname is_cluster_known
+#' @export
 get_cluster_name <- function(cluster_name) {
   return(tolower(gsub(" ", "", cluster_name)))
 }
 
+#' @rdname is_cluster_known
+#' @export
 get_cluster_package_name <- function(cluster_name) {
   return(paste0(get_config_pkg_prepend(), get_cluster_name(cluster_name)))
 }

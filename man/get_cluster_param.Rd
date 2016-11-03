@@ -4,7 +4,7 @@
 \alias{get_cluster_param}
 \title{Utility function to graph parameter}
 \usage{
-get_cluster_param(configs, parameter, scope)
+get_cluster_param(configs, parameter, scope, default = NULL)
 }
 \arguments{
 \item{configs}{List. Cluster configurations, usually obtained using a call to
@@ -12,7 +12,13 @@ get_cluster_param(configs, parameter, scope)
 
 \item{parameter}{Character. The name of the parameter of interest.}
 
-\item{scope}{Charcter. The}
+\item{scope}{Charcter. The scope of the configurations of interest. The configuration
+YAML may be organized by various headings.}
+
+\item{default}{Any Type. This is the retrun value in the event that no parameter
+is found. This is useful, for example, if looking for a value you expect to 
+be \code{TRUE} or \code{FALSE} and you want to default to one of those if the
+parameter is not found.}
 }
 \description{
 This function centralizes digging through the configurations list into one place.
