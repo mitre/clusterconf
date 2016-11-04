@@ -1,6 +1,6 @@
 test_that("Configs can be loaded" , {
   with_mock(
-    is_cluster_known=function(x){return(TRUE)},
+    is_cluster_known=function(x, stopifnot){return(TRUE)},
     get_cluster_package_name=function(x){return("clusterconf")},
     configs <- get_cluster_configs("abc")
   )
@@ -9,7 +9,7 @@ test_that("Configs can be loaded" , {
 
 test_that("parameter extraction works", {
   with_mock(
-    is_cluster_known=function(x){return(TRUE)},
+    is_cluster_known=function(x, stopifnot){return(TRUE)},
     get_cluster_package_name=function(x){return("clusterconf")},
     configs <- get_cluster_configs("abc")
   )
