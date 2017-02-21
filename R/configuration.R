@@ -28,7 +28,7 @@ get_cluster_configs <- function(cluster_name, scope, yaml_path) {
   return(configs)
 }
 
-#' Utility function to graph parameter
+#' Utility function to grab parameter
 #' 
 #' This function centralizes digging through the configurations list into one place.
 #' Given a parameter name and (optionally) a scope, it will find the parameter and
