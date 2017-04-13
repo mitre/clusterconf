@@ -49,10 +49,19 @@ is_cluster_known <- function(cluster_name, install="ask", stopifnot=FALSE) {
 }
 
 #' @rdname is_cluster_known
+#' @param installed_only Logical indicator of whether to only look at installed 
+#'   packages rather than available packages.  This can save time, especially in
+#'   the first call from a new session, relative to looking in all available
+#'   packages.  Default FALSE.
 #' @export
-list_available_clusters <- function() {
+list_available_clusters <- function(installed_only=FALSE) {
   pattern <- paste0("^", get_config_pkg_prepend())
-  ap <- c(available.packages()[, 1], installed.packages()[, 1])
+  
+  if (installed_only) {
+    ap <- installed.packages()[, 1]
+  } else {
+    ap <- c(available.packages()[, 1], installed.packages()[, 1])
+  }
   config_pkgs <- ap[grepl(pattern, ap)]
   cluster_names <- gsub(pattern, "", config_pkgs)
   names(cluster_names) <- NULL
