@@ -2,7 +2,7 @@
 % Please edit documentation in R/configuration.R
 \name{get_cluster_param}
 \alias{get_cluster_param}
-\title{Utility function to graph parameter}
+\title{Utility function to grab parameter}
 \usage{
 get_cluster_param(configs, parameter, scope, default = NULL)
 }
@@ -32,4 +32,3 @@ In the event that multiple configurations match the requested parameter (e.g.,
 there exist parameters in different scopes with the same name) then all matches
 will be returned provided they are at the same level of nestedness.
 }
-

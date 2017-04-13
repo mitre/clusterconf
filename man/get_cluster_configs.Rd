@@ -10,13 +10,17 @@ get_cluster_configs(cluster_name, scope, yaml_path)
 get_yaml_configuraions_path(cluster_name)
 }
 \arguments{
-\item{cluster_name}{Character. The name of the cluster. Capitolization and spacing
+\item{cluster_name}{Character. The name of the cluster. Capitalization and spacing
 is ignored and does not matter (e.g., "My Cluster" is equivalent to "mycluster")}
 
 \item{scope}{Character. The scope of the configurations of interest. The configuration
-YAML may be organized by various headings.}
+YAML may be organized by various headings. Optional. If not provided, the full 
+configuration will be returned without any filtering.}
+
+\item{yaml_path}{Character. The path to the yaml configuration file for the specified
+cluster.  Optional.  If not provided, code looks for \code{/inst/config/*yaml} in 
+the installed package \code{cluster_name}.}
 }
 \description{
 Find and read the cluster configuration file for a named cluster.
 }
-

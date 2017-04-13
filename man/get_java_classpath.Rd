@@ -27,4 +27,3 @@ Some cluster configuration packages contain java dependencies. This utility will
 use the jar names from the configuration YAML and find the full file paths to the
 stated dependencies.
 }
-
