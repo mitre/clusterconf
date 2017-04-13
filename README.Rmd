@@ -1,0 +1,12 @@
+---
+title: "Cluster Configurations"
+output: 
+  md_document:
+    variant: markdown_github
+---
+
+## Package Purpose
+
+This is the `clusterconf.*` package parent. This package will handle reading in configurations, parsing out parameter values from configurations, and tracking/installing cluster-specific configuration packages.
+  
+
