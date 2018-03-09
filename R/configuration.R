@@ -144,6 +144,9 @@ get_java_classpath <- function(jars, cluster_name, base_path, configs) {
 }
 
 #' @rdname get_java_classpath
+#' @param pkg_name Character. Name of package to identify java dependencies
+#'   within.  Optional.  If not provided, it will be derived from the name of
+#'   the cluster.
 #' @export
 get_java_dependencies_path <- function(cluster_name, pkg_name) {
   if (missing(pkg_name))

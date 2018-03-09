@@ -21,6 +21,10 @@ be found. This is used in place of the cluster resources if provided.}
 
 \item{configs}{List. The parsed YAML configurations. This is used if provided and
 neither \code{cluster_name} nor \code{base_path} is provided}
+
+\item{pkg_name}{Character. Name of package to identify java dependencies
+within.  Optional.  If not provided, it will be derived from the name of
+the cluster.}
 }
 \description{
 Some cluster configuration packages contain java dependencies. This utility will
