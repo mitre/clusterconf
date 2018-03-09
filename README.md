@@ -1,0 +1,82 @@
+Purpose
+-------
+
+The `clusterconf` package extends the [`config` package](https://github.com/rstudio/config) to provide a proposed standard for obtaining hadoop cluster configurations from R. This allows configuration details to be handled separately from functionality and alleviates the burden on end users to provide details (assuming one person per cluster bites the bullet for the greater good) when loading a feature package.
+
+Approach
+--------
+
+The gist of how this is done is by combining YAML configuration details (read by `config`) with R's built-in dependency management (i.e., `install.packages`). So long as child packages (e.g., `clusterconf.mycluster`) follow certain rules, then feature packages can build declare a dependency on `clusterconf` and then work with any cluster. The functional interface to ask for configuration values is exposed in the `clusterconf` packages and the actual configurations and java dependencies are provided via the child, cluster-specific, package.
+
+The Child Package
+-----------------
+
+It is unlikely than many (any) implementing packages will be publicly available since they contain information on particular hadoop clusters. Therefore we sketch out here what components are necessary.
+
+### R Code & Package Naming Convention
+
+Only one R function is required. The child package must implement `get_cluster_name`, which returns a string and that the return value of that function, once spaces are removed and all letters converted to lower-case, match the portion of the package name after the period. For example if `get_cluster_name` returns `"My Cluster"` then the R package name needs to be `clusterconf.mycluster`. The reason for the strict package naming convention is so that `clusterconf::list_available_clusters` can search both installed packages and packages in any configured repositories (i.e., return of `getOption("repos")`) for child packages.
+
+The configuration package essentially just has a configuration YAML similar to the one above. When developing this file should be placed in `./inst/configs` and any java dependencies should go in `./inst/java`.
+
+### YAML Configuration
+
+A YAML configuration file is the main component of the cluster-specific package. It should be placed in `<package root>/inst/configs` and may be named anything so long as it is a `*.yaml` file. Though it is unlikely that any one feature package will require all of the information in a configuration file it is good practice to include as much as possible so that a variety of feature packages all work. The configurations are accessed lazily, so errors will only result when a feature package attempts to use a missing configuration.
+
+Below is a sample configuration file with notes (instead of values) about what is expected in each field.
+
+    default:
+      cluster:  
+        home: path to hadoop install on edge node e.g., "/usr/hdp/hadoop"
+        ha_node: name of high availability node, eg, "mycluster-ha"
+        name_node: names of name nodes, e.g., ["mycluster-nn1", "mycluster-nn2"]
+        edge_node: name of edge node, e.g., "mycluster-gw"
+        edge_port: port to use to connect to edge node, e.g., 22
+      yarn:
+        conf_dir: path to yarn configurations on edge node, e.g., "/etc/hadoop/conf"
+      spark:
+        home: path to spark installation on edge node, e.g., "/usr/hdp/hadoop/spark"
+        conf_dir: path to spark configurations on edge node, e.g., "/etc/spark/conf"
+        packages: default spark packages to include on the path when starting a session, e.g., ["com.databricks:spark-avro_2.10:2.0.1", "com.databricks:spark-csv_2.10:1.5.0"]
+      spark_sql:
+        host: e.g., "mycluster-rm1"
+        port: e.g., "10001"
+        driver: driver class name, e.g., "org.apache.hive.jdbc.HiveDriver"
+        classpath: driver classpath, e.g., ["hive-jdbc.jar", "hadoop-common-2.6.0.2.2.4.2-2.jar"]
+      hive: 
+        pw_required: default authentication required setting, e.g., false
+        host: e.g., "mycluster-rm2"
+        port: e.g., "10010"
+        driver: driver class name, e.g., "org.apache.hive.jdbc.HiveDriver"
+        classpath: driver classpath, e.g., ["hive-jdbc.jar", "hadoop-common-2.6.0.2.2.4.2-2.jar"]
+      drill:
+        storage: default storage name (from drill UI), e.g., "dfs"
+        hive_storage: name of hive storage plugin (for querying Hive metastore)
+        url: connection URL (equivalent to host + port for hive but generally more complicated for drill)
+        driver: driver class name, e.g., "org.apache.drill.jdbc.Driver"
+        classpath: driver classpath, e.g., "drill-jdbc-all-1.6.0.jar"
+      webhdfs:
+        port: connection port, e.g., "50070"
+        suffix: the part of the webhdfs URL after the port, e.g., "webhdfs/v1"
+      tools:
+        avro: path to avro-tools on edge node, e.g., "/lib/avro-tools-1.7.7.jar"
+        parquet: path to parquet-tools on edge node, e.g., "/lib/parquet-tools-1.8.1.jar"
+      resources:
+        package: package containing java resources, e.g., "clusterconf.myothercluster"
+        directory: a directory containing java resources
+
+A few notes:
+
+-   Not all configurations are required to make a given connection. This configuration file is also used by other HDFS-integration packages. For example, the entire `spark` and `yarn` sections could be omitted if SQL on hadoop is the only use case.
+
+-   The `resources` section needs an entry in *either* the `package` or `directory` field. Not both.
+
+-   The `package` option in the `resources` section enables less duplication of java dependencies. Thus, for example, if your organization has several hadoop clusters then `clusterconf.cluster2` can declare a dependency (in the `imports` section of the DESCRIPTION file) on `clusterconf.cluster1` and the cluster 1 package can be the only one that is bloated with driver jars and other such dependencies.
+
+-   The `package` option in the `resources` section may be self referential. Extending the example from above, the line in the YAML file may read: `package: clusterconf.cluster1` for *both* the cluster 1 package and the cluster 2 package.
+
+-   Make sure that there is a line break to end the file. If the file ends on a line with text it will not break things, but a warning will be printed every time it is parsed.
+
+### Java Dependencies
+
+Java dependencies should be placed in `<package root>/inst/java`. It is expected that exact name matches should be found. Using the above YAML configuration as an example, if the package reference was self referential then `clusterconf` will expect that `hive-jdbc.jar` will exactly be found in the aforementioned directory.
