@@ -1,3 +1,6 @@
+Cluster Configurations
+================
+
 Purpose
 -------
 
