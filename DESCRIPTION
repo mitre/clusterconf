@@ -1,7 +1,11 @@
 Package: clusterconf
 Title: Interface with clusterconf.cluster packages to read cluster configurations
-Version: 0.0.3
-Authors@R: c(person("Matt", "Pollock", email = "mpollock@mitre.org", role = c("aut", "cre")), person("Brendan", "Hogan", email = "bhogan@mitre.org", role = "aut"))
+Version: 0.0.4
+Authors@R: c(
+    person("Matt", "Pollock", email = "mpollock@mitre.org", role = c("aut", "cre")),
+    person("Brendan", "Hogan", email = "bhogan@mitre.org", role = "aut"),
+    person(family = "The MITRE Corporation", email = "opensource@mitre.org", role = "cph")
+    )
 Description: The clusterconf.* package parent. This package will handle reading in configurations,
   parsing out parameter values from configurations, and tracking/installing cluster-specific 
   configuration packages.
