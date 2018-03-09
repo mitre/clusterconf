@@ -5,6 +5,9 @@ output:
     variant: markdown_github
 ---
 
+[![Build Status](https://travis-ci.org/mitre/clusterconf.svg?branch=master)](https://travis-ci.org/mitre/clusterconf)
+
+
 ## Purpose
 
 The `clusterconf` package extends the [`config` package](https://github.com/rstudio/config) to provide a proposed standard for obtaining hadoop cluster configurations from R.

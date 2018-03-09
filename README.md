@@ -1,6 +1,8 @@
 Cluster Configurations
 ================
 
+[![Build Status](https://travis-ci.org/mitre/clusterconf.svg?branch=master)](https://travis-ci.org/mitre/clusterconf)
+
 Purpose
 -------
 
