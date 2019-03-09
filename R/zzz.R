@@ -10,7 +10,7 @@ reset_cache <- function() {
 }
 
 get_var <- function(varstr) {
-  res <- try(get(varstr, envir=pkg_globals), silent=TRUE)
+  res <- try(base::get(varstr, envir=pkg_globals), silent=TRUE)
   if(inherits(res, "try-error")){
     return(NULL)
   } else {
