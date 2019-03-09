@@ -1,12 +1,11 @@
 ---
-title: "Cluster Configurations"
-output: 
-  md_document:
-    variant: markdown_github
+output: github_document
 ---
 
-[![Build Status](https://travis-ci.org/mitre/clusterconf.svg?branch=master)](https://travis-ci.org/mitre/clusterconf)
+# clusterconf
 
+[![Build Status](https://travis-ci.org/mitre/clusterconf.svg?branch=master)](https://travis-ci.org/mitre/clusterconf)
+[![Coverage Status](https://codecov.io/gh/mitre/clusterconf/branch/master/graph/badge.svg)](https://codecov.io/github/mitre/clusterconf?branch=master)
 
 ## Purpose
 
