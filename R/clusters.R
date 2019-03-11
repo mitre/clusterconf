@@ -18,9 +18,9 @@ is_cluster_known <- function(cluster_name, install="ask", stopifnot=FALSE) {
   config_pkg <-get_cluster_package_name(cluster_name)
   if (config_pkg %in% installed.packages()[, 1]) {
     return(TRUE)
-  } else if (config_pkg %in% list_available_clusters()) {
+  } else if (get_cluster_name(cluster_name) %in% list_available_clusters()) {
     message("The cluster configuration package '", config_pkg, "', corresponding to the '",
-            config_pkg, "' cluster is not installed. It is however a cluster with known configuration. ")
+            cluster_name, "' cluster is not installed. It is however a cluster with known configuration. ")
     if (grepl("^a", install))
       response <- readline("Would you like to install the configurations now? [y/n]: ")
     else

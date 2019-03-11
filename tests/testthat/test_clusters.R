@@ -85,14 +85,14 @@ test_that("is_cluster_known correctly determines a known cluster", {
   )
 })
 
-# test_that("is_cluster_known notifies about uninstalled, but available, package", {
-#   with_mock(
-#     installed.packages = function() { matrix("def") },
-#     available.packages = function() { matrix("clusterconf.abc") },
-#     expect_message(is_cluster_known("abc", install = "no"), "is not installed"),
-#     expect_false(is_cluster_known("abc"))
-#   )
-# })
+test_that("is_cluster_known notifies about uninstalled, but available, package", {
+  with_mock(
+    installed.packages = function() { matrix("def") },
+    available.packages = function() { matrix("clusterconf.abc") },
+    expect_message(is_cluster_known("abc", install = "no"), "is not installed"),
+    expect_false(is_cluster_known("abc"))
+  )
+})
 
 test_that("is_cluster_known issues warning for unavailable package", {
   with_mock(
