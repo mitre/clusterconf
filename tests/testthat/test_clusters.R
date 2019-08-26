@@ -23,10 +23,11 @@ test_that("get_cluster_package_name works", {
 
 test_that("list_available_clusters works with no installed clusterconf packages", {
   with_mock(
-    installed.packages = function() { matrix("abc") }
+    installed.packages = function() { matrix("abc") },
+    available_clusters <- list_available_clusters(installed_only = TRUE)
   )
-
-  expect_equal(list_available_clusters(installed_only = TRUE), character(0L))  
+  
+  expect_equal(available_clusters, character(0L))
 })
 
 test_that("list_available_clusters works with some installed clusterconf packages", {
