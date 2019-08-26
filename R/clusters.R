@@ -4,6 +4,7 @@
 #' the even that configurations are available in a configured repository but not installed
 #' locally then the user will be prompted to install the configurations.
 #' 
+#' @importFrom utils installed.packages install.packages
 #' @param cluster_name Character. The name of the cluster. Capitolization and spacing
 #'   is ignored and does not matter (e.g., "My Cluster" is equivalent to "mycluster")
 #' @param install Character. Should be one of \code{"ask"}, \code{"yes"}, or \code{"no"},
@@ -49,6 +50,7 @@ is_cluster_known <- function(cluster_name, install="ask", stopifnot=FALSE) {
 }
 
 #' @rdname is_cluster_known
+#' @importFrom utils installed.packages available.packages
 #' @param installed_only Logical indicator of whether to only look at installed 
 #'   packages rather than available packages.  This can save time, especially in
 #'   the first call from a new session, relative to looking in all available
