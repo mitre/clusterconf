@@ -8,9 +8,7 @@ home:
   links:
   - text: Source
     href: https://github.com/mitre/clusterconf
-  - text: Report a bug
-    href: https://github.com/mitre/clusterconf/issues
-    
+
 navbar:
   title: "clusterconf"
   type: inverse
