@@ -1,4 +1,6 @@
-templates:
+url: https://mitre.github.io/clusterconf
+
+template:
   params:
     bootswatch: cerulean
 
@@ -9,16 +11,16 @@ home:
   - text: Report a bug
     href: https://github.com/mitre/clusterconf/issues
     
-
 navbar:
+  title: "clusterconf"
   type: inverse
   left:
-    - text: "Home"
+    - icon: fa-home fa-2x
       href: index.html
     - text: "Reference"
       href: reference/index.html
   right:
-    - icon: fa-github fa-lg
+    - icon: fa-github fa-2x
       href: https://github.com/mitre/clusterconf
 
 
