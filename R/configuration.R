@@ -132,7 +132,7 @@ get_java_classpath <- function(jars, cluster_name, base_path, configs) {
     if (is.na(base_path))
       base_path <- get_java_dependencies_path(pkg_name=get_cluster_param(
         configs, parameter="package", scope="resources", default = NA))
-  } else if (missing(base_path) && missing(cluster_name) && !missing(configs)) {
+  } else if (missing(base_path) && missing(cluster_name) && missing(configs)) {
     stop("Unable to locate dependencies. One of 'cluster_path', 'base_path', or 'configs' must be input")
   }
   

@@ -77,3 +77,19 @@ test_that("get_java_dependencies_path works with provided package name", {
                  file.path(tmp_dir, "inst", "java"))
   )
 })
+
+test_that("get_java_classpath works with provided cluster name", {
+  with_mock(
+    get_java_dependencies_path=function(cluster_name, pkg_name) {return(file.path("fake", "path"))},
+    dir=function(path, include.dirs=FALSE) {return(c("fake1.jar", "fake2.jar"))},
+    
+    expect_equal(get_java_classpath("fake1.jar", "abc"),
+                 file.path("fake", "path", "fake1.jar"))
+  )
+})
+
+test_that("get_java_classpath throws error with insufficient input", {
+  expect_error(get_java_classpath("fake1.jar"),
+               "Unable to locate dependencies")
+})
+
