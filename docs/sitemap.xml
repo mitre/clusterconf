@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://mitre.github.io/clusterconf/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mitre.github.io/clusterconf/reference/get_cluster_configs.html</loc>
+  </url>
+  <url>
+    <loc>https://mitre.github.io/clusterconf/reference/get_cluster_param.html</loc>
+  </url>
+  <url>
+    <loc>https://mitre.github.io/clusterconf/reference/get_java_classpath.html</loc>
+  </url>
+  <url>
+    <loc>https://mitre.github.io/clusterconf/reference/is_cluster_known.html</loc>
+  </url>
+</urlset>
