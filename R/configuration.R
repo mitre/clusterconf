@@ -45,7 +45,7 @@ get_cluster_configs <- function(cluster_name, scope, yaml_path) {
 #' @param parameter Character. The name of the parameter of interest. 
 #' @param scope Charcter. The scope of the configurations of interest. The configuration
 #'   YAML may be organized by various headings.
-#' @param default Any Type. This is the retrun value in the event that no parameter
+#' @param default Any Type. This is the return value in the event that no parameter
 #'   is found. This is useful, for example, if looking for a value you expect to 
 #'   be \code{TRUE} or \code{FALSE} and you want to default to one of those if the
 #'   parameter is not found.
