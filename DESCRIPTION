@@ -3,7 +3,7 @@ Title: Interface with clusterconf.cluster packages to read cluster configuration
 Version: 0.0.4
 Authors@R: c(
     person("Matt", "Pollock", email = "mpollock@mitre.org", role = c("aut", "cre")),
-    person("Brendan", "Hogan", email = "bhogan@mitre.org", role = "aut"),
+    person("Brendan", "Hogan", email = "bhogan@mitre.org", role = "aut", comment = c(ORCID = "0000-0002-4010-5224")),
     person(family = "The MITRE Corporation", email = "opensource@mitre.org", role = "cph")
     )
 Description: The clusterconf.* package parent. This package will handle reading in configurations,
