@@ -93,3 +93,34 @@ test_that("get_java_classpath throws error with insufficient input", {
                "Unable to locate dependencies")
 })
 
+test_that("get_java_classpath throws warning if a jar is not found", {
+  with_mock(
+    get_java_dependencies_path=function(cluster_name, pkg_name) {return(file.path("fake", "path"))},
+    dir=function(path, include.dirs=FALSE) {return(c("fake1.jar", "fake2.jar"))},
+    
+    expect_warning(get_java_classpath(c("fake1.jar", "fake3.jar"), "abc"),
+                   "Unable to locate dependencies: 'fake3.jar'")
+  )
+})
+
+test_that("get_java_classpath works with provided base path", {
+  with_mock(
+    dir=function(path, include.dirs=FALSE) {return(c("fake1.jar", "fake2.jar"))},
+    
+    expect_equal(get_java_classpath("fake1.jar", 
+                                    base_path = file.path("fake", "path")),
+                 file.path("fake", "path", "fake1.jar"))
+  )
+})
+
+test_that("get_java_classpath works with provided configs", {
+  with_mock(
+    get_cluster_param=function(configs, parameter, scope, default) {return(file.path("fake", "path"))},
+    dir=function(path, include.dirs=FALSE) {return(c("fake1.jar", "fake2.jar"))},
+    
+    expect_equal(get_java_classpath("fake1.jar", configs = list()),
+                 file.path("fake", "path", "fake1.jar"))
+  )
+})
+
+
